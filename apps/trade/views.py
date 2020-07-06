@@ -6,7 +6,7 @@ from utils.permissions import IsOwnerOrReadOnly
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 from rest_framework import mixins
-from .serializers import ShoppingSerializer,ShopCartDetailSerializer,OrderSerializer,OrderDetailSerializer
+from .serializers import ShoppingSerializer, ShopCartDetailSerializer, OrderSerializer,OrderDetailSerializer
 from .models import ShoppingCart,OrderGoods,OrderInfo
 
 
@@ -107,7 +107,7 @@ class OrderViewset(mixins.ListModelMixin,mixins.CreateModelMixin,mixins.DestroyM
             order_goods.goods_num = shop_cart.nums
             order_goods.order = order
             order_goods.save()
-
+            # 清空购物车
             shop_cart.delete()
         return order
 

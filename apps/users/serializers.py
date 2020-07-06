@@ -62,13 +62,16 @@ class UserRegSerializers(serializers.ModelSerializer):
 
         })
 
-    # 密码设置
+    # 密码设置  密文显示
     password = serializers.CharField(
-        style={'input_type': 'password'},label='密码',write_only=True
+        style={'input_type': 'password'},
+        label='密码',
+        write_only=True  # write_only 反序列化不加入其中
     )
 
+    # 验证用户是否存在 是否唯一
     username = serializers.CharField(label='用户名',required=True,allow_blank=False,
-                                     validators=[UniqueValidator(queryset=User.objects.all())])  # 判断唯一性 字段
+                                     validators=[UniqueValidator(queryset=User.objects.all(),message="用户已存在")])  # 判断唯一性 字段
 
     def validate_code(self, code):
         """
@@ -77,6 +80,10 @@ class UserRegSerializers(serializers.ModelSerializer):
         :return:
         """
         # 前端获取传入的手机号 并且进行安装时间排序
+        # initial_data 接受前段传递过来的值 post过来的值
+        # filter 与 get 取值方式的不同 需要搞明白
+        # [VerifyCode.objects.filter]  [VerifyCode.objects.get]
+
         verify_records = VerifyCode.objects.filter(mobile=self.initial_data['username']).order_by('-add_time')
         if verify_records:
             last_records = verify_records[0]
@@ -95,13 +102,14 @@ class UserRegSerializers(serializers.ModelSerializer):
 
     def validate(self, attrs):
         """
-        作用域所有字段之上
+        作用域所有字段之上  做所有字段的设置
         :param self:
         :param attrs:  每个字段返回的所有总的dict
         :return:
         """
-        attrs['mobile'] = attrs['username']
-        del attrs['code']
+        attrs['mobile'] = attrs['username']  # 手机号和用户名对等
+        # 在code验证完成后删除掉
+        del attrs['code']  # 删除code
         return attrs
 
     class Meta:

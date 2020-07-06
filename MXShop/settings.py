@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import sys
-
+# from rest_framework.authentication import SessionAuthentication
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -33,8 +33,15 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
+"""
+如果您要开始一个新项目，强烈建议您设置一个自定义用户模型，即使默认User模型足以满足您的要求。
+该模型的行为与默认用户模型相同，但是如果需要，您将来可以自定义它：
+不要忘记指出AUTH_USER_MODEL它。在创建任何迁移或首次运行之前，请执行此操作。manage.py migrate
+"""
 AUTH_USER_MODEL = "users.UserProfile"  # 替换系统用户
 
+
+# 注册app
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -52,17 +59,17 @@ INSTALLED_APPS = [
     'xadmin',
     'rest_framework',
     'corsheaders',
-    'rest_framework.authtoken'  # 使用token机制
+    'rest_framework.authtoken'  # 使用登陆机制token机制
 ]
 
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',  # 转换成request.user
+    'django.contrib.sessions.middleware.SessionMiddleware',  # 转换成request.user 中间件的转换
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware', # 转换成request.user
+    'django.contrib.auth.middleware.AuthenticationMiddleware', # 转换成request.user  中间件的转换
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -93,6 +100,8 @@ WSGI_APPLICATION = 'MXShop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+
+# 编辑连接数据库 用户名 密码 库名称 地址
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

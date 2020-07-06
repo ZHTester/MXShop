@@ -36,10 +36,10 @@ class UserFavSerializer(serializers.ModelSerializer):
             UniqueTogetherValidator(
                 queryset=UserFav.objects.all(),
                 fields=['user', 'goods'],
-                message = "已经收藏"
+                message = "已经收藏"  # 错误返回消息
             )
         ]
-        fields = ("user","goods","id")  #
+        fields = ("user","goods","id")
 
 class LeavingMessageSerializer(serializers.ModelSerializer):
     """

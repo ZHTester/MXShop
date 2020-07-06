@@ -6,8 +6,9 @@
 # @FileName    : permissions.py
 # @Software: PyCharm
 
-权限管理
+自定义-权限管理
 
+判断用户是否存在 或者是否是存在于get post delete上
 """
 from rest_framework import permissions
 class IsOwnerOrReadOnly(permissions.BasePermission):

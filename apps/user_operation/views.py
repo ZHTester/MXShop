@@ -14,7 +14,8 @@ class UserFavViewset(mixins.CreateModelMixin,mixins.ListModelMixin,mixins.Destro
     mixins.CreateModelMixin 新增收藏
     mixins.DestroyModelMixin 删除收藏 取消收藏
     mixins.ListModelMixin 获取收藏商品列表功能
-    mixins.RetrieveModelMixin 商品号回生成一个Url
+    mixins.RetrieveModelMixin -检索字断  -回显生成url
+
     list:
         获取商品收藏列表
     create:
@@ -25,7 +26,7 @@ class UserFavViewset(mixins.CreateModelMixin,mixins.ListModelMixin,mixins.Destro
     queryset = UserFav.objects.all()
     permission_classes = (IsAuthenticated,IsOwnerOrReadOnly)  # 权限验证
     authentication_classes = (JSONWebTokenAuthentication,SessionAuthentication)   # 登陆token验证 不会在全局做json的验证
-    lookup_field = "goods_id"
+    lookup_field = "goods_id"  # 单独查询数据字断  RetrieveModeMixin
 
     def get_serializer_class(self):
         """
@@ -43,7 +44,7 @@ class UserFavViewset(mixins.CreateModelMixin,mixins.ListModelMixin,mixins.Destro
     serializer_class =  UserFavSerializer
 
     def get_queryset(self):
-        # 显示自己的收藏
+        # 显示自己的收藏  判断是否是当前用户
         return UserFav.objects.filter(user=self.request.user)
 
 class LeavingMessageViewset(mixins.ListModelMixin, mixins.CreateModelMixin,
@@ -62,21 +63,21 @@ class LeavingMessageViewset(mixins.ListModelMixin, mixins.CreateModelMixin,
 
 
 class AddressViewset(viewsets.ModelViewSet):
-    """
+    """ 
     收货地址管理
     list:
-        获取收货地址
+        获取收货地址  显示 
     create:
-        添加收货地址
+        添加收货地址  
     update:
         更新收货地址
     delete:
         删除收货地址
     """
     queryset = UserAddress.objects.all()
-    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)
-    authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 权限查看drf官方文档
+    authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)  # 浏览器session
     serializer_class = UserAddressSerializer
 
-    def get_queryset(self):
+    def get_queryset(self): 
         return UserAddress.objects.filter(user=self.request.user)

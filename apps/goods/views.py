@@ -35,16 +35,17 @@ class GoodsListViewSet(mixins.ListModelMixin,mixins.RetrieveModelMixin,viewsets.
     商品列表接口 【分页  搜索  过滤 排序】
     mixins.RetrieveModelMixin 获取商品详情页面数据
     """
-    queryset = Goods.objects.all()
-    serializer_class = GoodsSerializer
+    queryset = Goods.objects.all()  # 相当于sql脚本通知view进行执行操作
+    serializer_class = GoodsSerializer  # 序列化容器
     # # 单独认证token的方式 在view中进行
     # authentication_classes = (TokenAuthentication,)
+    # 分页功能
     pagination_class = GoodsPagination
 
     # 配置过滤器  字段过滤器 搜索器 排序
-    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
-    filter_class = GoodsFilter
-    search_fields = ('name', 'goods_brief', 'goods_desc')
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)  # 定制过滤
+    filter_class = GoodsFilter # 自定义过滤
+    search_fields = ('^name', 'goods_brief', 'goods_desc')
     ordering_fields = ('sold_num', 'shop_price')
 
     # def get_queryset(self):
@@ -109,6 +110,9 @@ class BannerViewset(mixins.ListModelMixin,viewsets.GenericViewSet):
 
 
 class IndexCategoryViewSet(mixins.ListModelMixin,viewsets.GenericViewSet):
+    """
+    
+    """
     queryset = GoodsCategory.objects.filter(is_tab=True,name__in=["生鲜食品", "酒水饮料"])
     serializer_class = IndexCategorysSerializer
 

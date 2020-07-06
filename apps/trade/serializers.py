@@ -2,7 +2,6 @@
 
 """
 # @Time    : 13/2/2020 11:00 上午
-# @Author  : Function
 # @FileName    : serializers.py
 # @Software: PyCharm
 """
@@ -35,7 +34,7 @@ class OrderSerializer(serializers.ModelSerializer):
     个人订单中心
     """
     user = serializers.HiddenField(
-        default=serializers.CurrentUserDefault()
+        default=serializers.CurrentUserDefault()  # 不显示当前用户
     )
     pay_status = serializers.CharField(read_only=True)
     trade_no = serializers.CharField(read_only=True)
@@ -89,7 +88,7 @@ class ShoppingSerializer(serializers.Serializer):
                                         "min_value": "商品数量不能小于一",
                                         "required": "请选择购买数量"
                                     })
-    goods = serializers.PrimaryKeyRelatedField(required=True, queryset=Goods.objects.all())
+    goods = serializers.PrimaryKeyRelatedField(required=True, queryset=Goods.objects.all())   #  PrimaryKeyRelatedField 表示主键ID
 
     def create(self, validated_data):
         """
@@ -104,11 +103,13 @@ class ShoppingSerializer(serializers.Serializer):
         existed = ShoppingCart.objects.filter(user=user, goods=goods)
 
         if existed:
+            # 如果存在商品在商品上加1
             existed = existed[0]
             existed.nums += nums
             existed.save()
 
         else:
+            # 创建商品
             existed = ShoppingCart.objects.create(**validated_data)
 
         return existed

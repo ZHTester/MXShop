@@ -19,7 +19,7 @@ class UserFav(models.Model):
     class Meta:
         verbose_name = '用户收藏'
         verbose_name_plural = verbose_name
-        unique_together = ("user", "goods")
+        unique_together = ("user", "goods")  # 数据库联合唯一的判断 如果存在重复的数据数据库则会抛出异常
 
     def __str__(self):
         return self.user.username

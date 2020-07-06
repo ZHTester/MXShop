@@ -20,7 +20,7 @@ User = get_user_model()
 @receiver(post_save, sender=User)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
-        # 修改用户信号量
+        # 修改用户信号量  修改密码
         password = instance.password
         instance.set_password(password)
         instance.save()

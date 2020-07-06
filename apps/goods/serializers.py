@@ -42,11 +42,14 @@ class GoodsImageSerializer(serializers.ModelSerializer):
 商品数据序列化
 """
 class GoodsSerializer(serializers.ModelSerializer):
+    """
+    商品详情页面显示
+    """
     # name = serializers.CharField(required=True,max_length=100)
     # click_num = serializers.IntegerField(default=0)
     # goods_front_image = serializers.ImageField()
     category = CategorySerializer()   # Goods 中嵌套
-    images = GoodsImageSerializer(many=True)
+    images = GoodsImageSerializer(many=True)  # 嵌套显示数据方式
     class Meta:
         model = Goods
         fields = '__all__'

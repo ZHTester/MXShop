@@ -85,11 +85,11 @@ class UserViewset(CreateModelMixin, mixins.UpdateModelMixin, mixins.RetrieveMode
     """
     用户注册
     用户修改
-    用户信息获取
+    用户信息获取      
     """
     serializer_class = UserRegSerializers
     queryset = User.objects.all()
-    authentication_classes = (authentication.SessionAuthentication,JSONWebTokenAuthentication)  # session管理
+    authentication_classes = (authentication.SessionAuthentication,JSONWebTokenAuthentication)  # session管理  用户权限管理
 
     """
     1 注册完成后 完成登陆的操作 并且跳转到首页
@@ -113,7 +113,7 @@ class UserViewset(CreateModelMixin, mixins.UpdateModelMixin, mixins.RetrieveMode
     # permission_classes = (permissions.IsAuthenticated,)  # 相关登陆权限 动态赋权限
     def get_permissions(self):
         """
-        动态配置权限 如果是get post请求就需要权限dengue
+        动态配置权限 如果是get post请求就需要权限dengue  在APIVIEW中的重写函数
         :return:
         """
         if self.action == "retrieve":

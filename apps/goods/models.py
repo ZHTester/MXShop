@@ -52,6 +52,7 @@ class GoodsCategoryBrand(models.Model):
 class Goods(models.Model):
     """
     商品
+
     """
     category = models.ForeignKey(GoodsCategory,verbose_name=u'商品类目',on_delete=models.CASCADE)
     good_sn = models.CharField(verbose_name=u'商品唯一货号',default='',max_length=200)
